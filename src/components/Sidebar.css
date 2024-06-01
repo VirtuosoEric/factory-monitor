@@ -8,6 +8,7 @@
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* Prevent overflow of the container */
 }
 
 .sidebar h2 {
@@ -18,11 +19,24 @@
   padding-bottom: 10px;
 }
 
+.sensor-list {
+  flex-grow: 1; /* Allows the sensor list to grow and take available space */
+  overflow-y: auto; /* Adds a vertical scrollbar when content overflows */
+}
+
+.sensor-group {
+  margin-top: 20px;
+}
+
+.sensor-group h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
 .sidebar ul {
   list-style-type: none;
   padding: 0;
-  margin: 20px 0;
-  flex-grow: 1;
+  margin: 0;
 }
 
 .sidebar ul li {
@@ -31,7 +45,7 @@
   background-color: #3a3a3a;
   border-radius: 5px;
   cursor: pointer;
-  text-align: center;
+  text-align: left;
   transition: background-color 0.3s;
 }
 
@@ -43,9 +57,13 @@
   background-color: #5a5a5a;
 }
 
+.sidebar ul li div {
+  margin-bottom: 5px;
+}
+
 .add-sensor-button {
   padding: 10px;
-  margin: 10px 0;
+  margin-bottom: 10px;
   background-color: #4a90e2;
   border: none;
   border-radius: 5px;

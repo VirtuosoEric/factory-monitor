@@ -9,7 +9,6 @@ const SensorModal = ({ onSave, onClose }) => {
 
   const handleSave = () => {
     onSave({ id: sensorId, name: sensorName, field: sensorField });
-    onClose();
   };
 
   const handleModalClick = (e) => {

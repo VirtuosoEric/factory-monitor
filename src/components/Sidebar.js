@@ -2,18 +2,37 @@
 import React from 'react';
 import './Sidebar.css';
 
-const Sidebar = ({ onAddSensor }) => {
+const Sidebar = ({ sensors, onAddSensor }) => {
+  // Group sensors by field
+  const groupedSensors = sensors.reduce((acc, sensor) => {
+    const { field } = sensor;
+    if (!acc[field]) {
+      acc[field] = [];
+    }
+    acc[field].push(sensor);
+    return acc;
+  }, {});
+
   return (
     <div className="sidebar">
-      <h2>Devices</h2>
-      <ul>
-        <li>Generator-S</li>
-        <li>Generator-M</li>
-        <li>Battery-S</li>
-        <li>Battery-M</li>
-        {/* Add more devices as needed */}
-      </ul>
       <button onClick={onAddSensor} className="add-sensor-button">Add Sensor</button>
+      <h2>Sensors</h2>
+      <div className="sensor-list">
+        {Object.keys(groupedSensors).map(field => (
+          <div key={field} className="sensor-group">
+            <h3>{field}</h3>
+            <ul>
+              {groupedSensors[field].map(sensor => (
+                <li key={sensor.id}>
+                  <div>ID: {sensor.id}</div>
+                  <div>Name: {sensor.name}</div>
+                  <div>Value: {sensor.value} LPM</div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

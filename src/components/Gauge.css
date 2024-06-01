@@ -1,0 +1,59 @@
+/* src/components/Gauge.css */
+.gauge-container {
+  position: relative;
+  width: 150px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gauge {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50% 50% 0 0;
+  background: #222;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.gauge-needle {
+  width: 2px;
+  height: 80%;
+  background-color: var(--gauge-color, #C83232);
+  transform: rotate(var(--gauge-rotate, -90deg));
+  transform-origin: bottom center;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.gauge-center {
+  position: absolute;
+  bottom: 0;
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.gauge-labels {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 10px;
+  color: #fff;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.gauge-value {
+  margin-top: 5px;
+  background: #333;
+  color: #fff;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 12px;
+}

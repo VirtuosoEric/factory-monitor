@@ -1,0 +1,39 @@
+/* src/components/FactoryLayout.css */
+.factory-layout {
+  width: 80%;
+  height: 100vh;
+  background-color: #1a1a1a;
+  background-image: url('factory-layout.jpeg'); /* Path to your layout image */
+  background-size: cover;
+  background-position: center;
+  position: relative; /* Ensures absolutely positioned elements are relative to this container */
+}
+
+.sensor-dot {
+  width: 20px;
+  height: 20px;
+  background-color: orange;
+  border-radius: 50%;
+  position: absolute;
+  box-shadow: 0 0 10px orange;
+  cursor: pointer;
+}
+
+.sensor-dot-preview {
+  background-color: green;
+  box-shadow: 0 0 10px green;
+  pointer-events: none; /* Make sure the preview dot doesn't capture mouse events */
+}
+
+.sensor-value {
+  position: absolute;
+  top: -150px; /* Adjust as needed */
+  left: 25px; /* Adjust as needed */
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  white-space: nowrap;
+  z-index: 10;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}

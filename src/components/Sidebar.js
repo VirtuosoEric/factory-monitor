@@ -2,7 +2,7 @@
 import React from 'react';
 import './Sidebar.css';
 
-const Sidebar = ({ sensors, onAddSensor }) => {
+const Sidebar = ({ sensors, onAddSensor, onDetectLeak }) => {
   // Group sensors by field
   const groupedSensors = sensors.reduce((acc, sensor) => {
     const { field } = sensor;
@@ -16,6 +16,7 @@ const Sidebar = ({ sensors, onAddSensor }) => {
   return (
     <div className="sidebar">
       <button onClick={onAddSensor} className="add-sensor-button">Add Sensor</button>
+      <button onClick={onDetectLeak} className="detect-leak-button">Detect Leak</button>
       <h2>Sensors</h2>
       <div className="sensor-list">
         {Object.keys(groupedSensors).map(field => (

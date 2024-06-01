@@ -61,7 +61,8 @@
   margin-bottom: 5px;
 }
 
-.add-sensor-button {
+.add-sensor-button,
+.detect-leak-button {
   padding: 10px;
   margin-bottom: 10px;
   background-color: #4a90e2;
@@ -73,10 +74,12 @@
   transition: background-color 0.3s;
 }
 
-.add-sensor-button:hover {
+.add-sensor-button:hover,
+.detect-leak-button:hover {
   background-color: #357abd;
 }
 
-.add-sensor-button:active {
+.add-sensor-button:active,
+.detect-leak-button:active {
   background-color: #2c5f9e;
 }

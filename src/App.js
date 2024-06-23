@@ -1,5 +1,5 @@
-// src/App.js
 import React, { useState, useEffect } from 'react';
+import moment from 'moment-timezone';
 import Sidebar from './components/Sidebar';
 import FactoryLayout from './components/FactoryLayout';
 import LeakDetectionModal from './components/LeakDetectionModal';
@@ -16,6 +16,8 @@ function App() {
   const [showLeakModal, setShowLeakModal] = useState(false);
   const [showLeakResultModal, setShowLeakResultModal] = useState(false);
   const [leakDetectionResults, setLeakDetectionResults] = useState([]);
+
+  const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   function getRandomSensorValue() {
     return (Math.random() * (15 - 5) + 5).toFixed(2);
@@ -58,28 +60,40 @@ function App() {
   const generateLeakDetectionResults = (settings) => {
     const { startDate, endDate, startTime, endTime, field } = settings;
     const results = [];
-    const start = new Date(`${startDate}T${startTime}`);
-    const end = new Date(`${endDate}T${endTime}`);
 
-    // Ensure we clone the time properly
-    let time = new Date(start);
+    // Convert start and end dates to the user's timezone
+    let start = moment.tz(`${startDate}T${startTime}`, 'Asia/Taipei');
+    const end = moment.tz(`${endDate}T${endTime}`, 'Asia/Taipei');
 
-    while (time <= end) {
-      const hour = time.getHours();
-      const day = time.getDay();
-      let leak = '0.00';
-      if (day >= 1 && day <= 5 && hour >= 8 && hour < 17) {
-        leak = getRandomLeakValue();
-      }
+    while (start <= end) {
+        // Generate data for each hour between startTime and endTime
+        let current = start.clone();
+        const dayEnd = moment.tz(`${start.format('YYYY-MM-DD')}T${endTime}`, 'Asia/Taipei');
 
-      results.push({
-        time: time.toISOString().slice(0, 19).replace('T', ' '),
-        field,
-        leak
-      });
+        while (current <= dayEnd && current <= end) {
+            const hour = current.hour();
+            const day = current.day();
+            let leak = '0.00';
 
-      // Increment time by one hour
-      time = new Date(time.getTime() + 60 * 60 * 1000);
+            if (day >= 1 && day <= 5 && hour >= 8 && hour < 17) {
+                leak = getRandomLeakValue();
+            }
+
+            let localTimeString = current.format('YYYY-MM-DD HH:mm:ss');
+            console.log(localTimeString);
+
+            results.push({
+                time: localTimeString,
+                field,
+                leak
+            });
+
+            // Increment time by one hour
+            current.add(1, 'hour');
+        }
+
+        // Move to the next day and set time to startTime
+        start.add(1, 'day').set({ hour: moment.tz(startTime, 'HH:mm').hour(), minute: moment.tz(startTime, 'HH:mm').minute() });
     }
 
     return results;
@@ -92,7 +106,7 @@ function App() {
     <div className="App">
       <Sidebar sensors={sensors} onAddSensor={handleAddSensorClick} onDetectLeak={handleDetectLeakClick} />
       <FactoryLayout sensors={sensors} isAdding={isAdding} setIsAdding={setIsAdding} onSaveSensor={handleSaveSensor} />
-      {showLeakModal && <LeakDetectionModal fields={fields} onSave={handleSaveLeakDetection} onClose={() => setShowLeakModal(false)} />}
+      {showLeakModal && <LeakDetectionModal fields={fields} onSave={handleSaveLeakDetection} onClose={() => setShowLeakModal(false)} userTimezone={userTimezone} />}
       {showLeakResultModal && <LeakDetectionResultModal results={leakDetectionResults} onClose={() => setShowLeakResultModal(false)} />}
     </div>
   );

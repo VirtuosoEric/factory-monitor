@@ -1,4 +1,3 @@
-// src/components/FactoryLayout.js
 import React, { useState, useEffect } from 'react';
 import './FactoryLayout.css';
 import Gauge from './Gauge';
@@ -8,6 +7,7 @@ const FactoryLayout = ({ sensors, isAdding, setIsAdding, onSaveSensor }) => {
   const [hoveredSensor, setHoveredSensor] = useState(null);
   const [cursorPosition, setCursorPosition] = useState({ top: 0, left: 0 });
   const [showModal, setShowModal] = useState(false);
+  const [fixedPosition, setFixedPosition] = useState({ top: 0, left: 0 });
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -30,12 +30,13 @@ const FactoryLayout = ({ sensors, isAdding, setIsAdding, onSaveSensor }) => {
 
   const handleLayoutClick = () => {
     if (isAdding) {
+      setFixedPosition(cursorPosition); // Capture the cursor position before showing the modal
       setShowModal(true);
     }
   };
 
   const handleSaveSensor = ({ id, name, field }) => {
-    const newSensor = { id, name, field, value: 0, top: `${cursorPosition.top}%`, left: `${cursorPosition.left}%` };
+    const newSensor = { id, name, field, value: 0, top: `${fixedPosition.top}%`, left: `${fixedPosition.left}%` };
     onSaveSensor(newSensor);
     setShowModal(false);
   };

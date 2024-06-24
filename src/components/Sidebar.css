@@ -62,7 +62,8 @@
 }
 
 .add-sensor-button,
-.detect-leak-button {
+.detect-leak-button,
+.dashboard-link {
   padding: 10px;
   margin-bottom: 10px;
   background-color: #4a90e2;
@@ -72,14 +73,20 @@
   cursor: pointer;
   text-align: center;
   transition: background-color 0.3s;
+  display: block; /* Ensure the link behaves like a block element */
+  text-decoration: none; /* Remove the default underline from the link */
+  font-weight: bold;
+  font-size: 18px; /* Increase the font size of the button text */
 }
 
 .add-sensor-button:hover,
-.detect-leak-button:hover {
+.detect-leak-button:hover,
+.dashboard-link:hover {
   background-color: #357abd;
 }
 
 .add-sensor-button:active,
-.detect-leak-button:active {
+.detect-leak-button:active,
+.dashboard-link:active {
   background-color: #2c5f9e;
 }

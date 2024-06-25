@@ -72,42 +72,43 @@ function App() {
     const specialEndDate = moment.tz('2024-04-15', 'Asia/Taipei');
 
     while (start <= end) {
-      // Generate data for each hour between startTime and endTime
-      let current = start.clone();
-      const dayEnd = moment.tz(`${start.format('YYYY-MM-DD')}T${endTime}`, 'Asia/Taipei');
+        // Generate data for each hour between startTime and endTime
+        let current = start.clone();
+        const nextDayEnd = moment.tz(`${start.clone().add(1, 'day').format('YYYY-MM-DD')}T${endTime}`, 'Asia/Taipei');
 
-      while (current <= dayEnd && current <= end) {
-        const hour = current.hour();
-        const day = current.day();
-        let leak = '0.00';
+        while (current <= nextDayEnd && current <= end) {
+            const hour = current.hour();
+            const day = current.day();
+            let leak = '0.00';
 
-        if (day >= 1 && day <= 5 && hour >= 8 && hour < 17) {
-          leak = getRandomLeakValue();
+            if (day >= 1 && day <= 5 && hour >= 8 && hour < 17) {
+                leak = getRandomLeakValue();
+            }
+
+            if (current.isBetween(specialStartDate, specialEndDate, 'day', '[]')) {
+                leak = getSpecialLeakValue();
+            }
+
+            let localTimeString = current.format('YYYY-MM-DD HH:mm:ss');
+            console.log(localTimeString);
+
+            results.push({
+                time: localTimeString,
+                field,
+                leak
+            });
+
+            // Increment time by one hour
+            current.add(1, 'hour');
         }
 
-        if (current.isBetween(specialStartDate, specialEndDate, 'day', '[]')) {
-          leak = getSpecialLeakValue();
-        }
-
-        let localTimeString = current.format('YYYY-MM-DD HH:mm:ss');
-        console.log(localTimeString);
-
-        results.push({
-          time: localTimeString,
-          field,
-          leak
-        });
-
-        // Increment time by one hour
-        current.add(1, 'hour');
-      }
-
-      // Move to the next day and set time to startTime
-      start.add(1, 'day').set({ hour: moment.tz(startTime, 'HH:mm').hour(), minute: moment.tz(startTime, 'HH:mm').minute() });
+        // Move to the next day and set time to startTime
+        start.add(1, 'day').set({ hour: moment.tz(startTime, 'HH:mm').hour(), minute: moment.tz(startTime, 'HH:mm').minute() });
     }
 
     return results;
-  };
+};
+
 
   // Extract unique fields from sensors
   const fields = Array.from(new Set(sensors.map(sensor => sensor.field)));
